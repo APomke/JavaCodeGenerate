@@ -48,11 +48,7 @@ def getTableDesc(databaseConfig,tableName):
     for row in result:
         row = list(row)
         # 进行属性类型转换
-        if ("varchar" in row[1]):
-            row[1] = "String"
-        if("int" in row[1]):
-            row[1] = "int"
-        # 等待后续添加
+        row[1] = convert_data_type(row[1])
 
         field = {"tableName":"{}".format(tableName),"attributesName":"{}".format(row[0]),"attributesType":"{}".format(row[1])}
         # is_nullable = row[2]
@@ -61,3 +57,36 @@ def getTableDesc(databaseConfig,tableName):
         # table_structure.append((field_name, data_type, is_nullable, key, extra))
         table_structure.append((field))
     return table_structure
+
+# 类型处理器 把mysql数据库类型转换为java类型
+def convert_data_type(data_type):
+    data_type = data_type.lower()  # 转换为小写以避免大小写问题
+    if any(keyword in data_type for keyword in ["varchar", "char", "text"]):
+        return "String"
+    elif "int" in data_type and not any(
+            keyword in data_type for keyword in ["tinyint", "smallint", "mediumint", "bigint"]):
+        return "int"
+    elif any(keyword in data_type for keyword in ["integrt", "id"]):
+        return "Long"
+    elif any(keyword in data_type for keyword in ["tinyint", "smallint", "mediumint", "boolean"]):
+        return "Integer"
+    elif "bit" in data_type:
+        return "Boolean"
+    elif "bigint" in data_type:
+        return "BigInteger"
+    elif "float" in data_type:
+        return "Float"
+    elif "double" in data_type:
+        return "Double"
+    elif "decimal" in data_type:
+        return "BigDecimal"
+    elif any(keyword in data_type for keyword in ["date", "year"]):
+        return "Date"
+    elif "time" in data_type:
+        return "Time"
+    elif any(keyword in data_type for keyword in ["datetime", "timestamp"]):
+        return "Timestamp"
+    elif "blob" in data_type:
+        return "byte[]"
+    else:
+        return "Object"  # Default type if no match is found

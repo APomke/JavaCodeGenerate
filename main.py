@@ -4,6 +4,8 @@ import toml
 from jinja2 import Template
 from template.eneity import entity_template_str
 from db.getDatabaseDesc import getAllTableName,getTableDesc
+
+from utils.PackageUtils import getJavaProjectPackageName
 import sys
 
 # 读取config.toml配置文件
@@ -56,13 +58,14 @@ def generateEntityCode():
         tmpl = Template(entity_template_str)
         result = tmpl.render(packageName=packageName, tableStructure=list)
         # 保存到项目entity目录
-        packageName = packageName.replace(".","\\")
-        saveCodeToJavaProject("entity",result,packageName,list[0].get("tableName"))
+        # 判断是否自定义生成代码的路径
+        if(config.get("generate").get("EntityGenerateLocalPath") != ""):
+            print("需要保存到自定义路径：",config.get("generate").get("EntityGenerateLocalPath"))
+            saveCodeToJavaProjecToPath(config.get("generate").get("EntityGenerateLocalPath"),list[0].get("tableName"),result)
+        else:
+            packageName = packageName.replace(".","\\")
+            saveCodeToJavaProject("entity",result,packageName,list[0].get("tableName"))
 
-
-
-    # 读取entity代码模板
-    # print(entity_template_str)
 
 
 # 生成service层代码
@@ -73,31 +76,12 @@ def generateServiceCode():
 def generateConttrollerCode():
     print("开始生成controller层代码")
 
-# 读取java项目获取项目包名
-def getJavaProjectPackageName(rootDir):
-    main_class_pattern = re.compile(r'^\s*@SpringBootApplication')
-    package_pattern = re.compile(r'^\s*package\s+([a-zA-Z0-9_.]+);')
-
-    for subdir, _, files in os.walk(rootDir):
-        for file in files:
-            if file.endswith(".java"):
-                file_path = os.path.join(subdir, file)
-                with open(file_path, 'r', encoding='utf-8') as f:
-                    lines = f.readlines()
-                    for i, line in enumerate(lines):
-                        if main_class_pattern.search(line):
-                            for j in range(i - 10, i):
-                                if j >= 0:
-                                    package_match = package_pattern.match(lines[j])
-                                    if package_match:
-                                        return package_match.group(1)
-    return None
 
 
 # 保存生成的代码到java项目里
-def saveCodeToJavaProject(dirName,code,packageName,tableName):
+def saveCodeToJavaProject(dirName,code,packageName,fileName):
     # 设置文件名
-    fileName = tableName + ".java"
+    fileName = fileName + ".java"
     path = config.get("generate").get("projectLocalPath") + "\\src" + "\\main" + "\\java"
     path = path + "\\" + packageName + "\\" + dirName
     # print("路径为：",path)
@@ -106,13 +90,34 @@ def saveCodeToJavaProject(dirName,code,packageName,tableName):
 
     path = path + "\\" + fileName
 
-    with open(path, 'wb') as f:
-        code = code.encode('utf-8')
-        f.write(code)
-    print(fileName,"生成成功")
+    # 判断要生成的文件是否在排除列表里
+    if(path in config.get("generate").get("ExclusionList")):
+        print("{}在配置文件ExclusionList项中，代码将不会保存".format(path))
+        return None
+    else:
+        with open(path, 'wb') as f:
+            code = code.encode('utf-8')
+            f.write(code)
+        print(fileName, "生成成功")
+        return None
 
-
-    return None
+# 保存生成的代码到自定义路径
+def saveCodeToJavaProjecToPath(path,fileName,code):
+    # 设置文件名
+    fileName = fileName + ".java"
+    if not os.path.exists(path):  # 如果路径不存在
+        os.makedirs(path)
+    path = path + "\\" + fileName
+    # 判断要生成的文件是否在排除列表里
+    if (path in config.get("generate").get("ExclusionList")):
+        print("{}在配置文件ExclusionList项中，代码将不会保存".format(path))
+        return None
+    else:
+        with open(path, 'wb') as f:
+            code = code.encode('utf-8')
+            f.write(code)
+        print("生成成功:{}".format(path))
+        return None
 
 if __name__ == "__main__":
     loadConfig()
