@@ -1,12 +1,13 @@
 import os
 import re
 
+
 # 读取java项目获取项目包名
-def getJavaProjectPackageName(rootDir):
+def get_java_project_package_name(root_dir):
     main_class_pattern = re.compile(r'^\s*@SpringBootApplication')
     package_pattern = re.compile(r'^\s*package\s+([a-zA-Z0-9_.]+);')
 
-    for subdir, _, files in os.walk(rootDir):
+    for subdir, _, files in os.walk(root_dir):
         for file in files:
             if file.endswith(".java"):
                 file_path = os.path.join(subdir, file)

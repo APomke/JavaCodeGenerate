@@ -1,14 +1,16 @@
 import pymysql
+
+
 # 获取所有表名
-def getAllTableName(databaseConfig):
+def get_all_table_name(database_config):
     # 连接数据库
-    # print("数据库地址是：",databaseConfig.get("url"))
+    # print("数据库地址是：",database_config.get("url"))
     conn = pymysql.connect(
-        host=databaseConfig.get("url"),
-        port=databaseConfig.get("port"),
-        user=databaseConfig.get("username"),
-        password=databaseConfig.get("password"),
-        database=databaseConfig.get("dbname")
+        host=database_config.get("url"),
+        port=database_config.get("port"),
+        user=database_config.get("username"),
+        password=database_config.get("password"),
+        database=database_config.get("dbname")
     )
     # 创建游标
     cursor = conn.cursor()
@@ -23,21 +25,22 @@ def getAllTableName(databaseConfig):
 
     return table_list
 
+
 # 获取表的表结构
-def getTableDesc(databaseConfig,tableName):
+def get_table_desc(database_config,table_name):
     # 连接数据库
-    # print("数据库地址是：",databaseConfig.get("url"))
+    # print("数据库地址是：",database_config.get("url"))
     conn = pymysql.connect(
-        host=databaseConfig.get("url"),
-        port=databaseConfig.get("port"),
-        user=databaseConfig.get("username"),
-        password=databaseConfig.get("password"),
-        database=databaseConfig.get("dbname")
+        host=database_config.get("url"),
+        port=database_config.get("port"),
+        user=database_config.get("username"),
+        password=database_config.get("password"),
+        database=database_config.get("dbname")
     )
     # 创建游标
     cursor = conn.cursor()
     # 编写sql
-    sql = "show columns from {}".format(tableName)
+    sql = "show columns from {}".format(table_name)
     # 运行sql
     cursor.execute(sql)
     # 获取查询结果
@@ -50,13 +53,14 @@ def getTableDesc(databaseConfig,tableName):
         # 进行属性类型转换
         row[1] = convert_data_type(row[1])
 
-        field = {"tableName":"{}".format(tableName),"attributesName":"{}".format(row[0]),"attributesType":"{}".format(row[1])}
+        field = {"table_name": "{}".format(table_name), "attributesName": "{}".format(row[0]), "attributesType": "{}".format(row[1])}
         # is_nullable = row[2]
         # key = row[3]
         # extra = row[4]
         # table_structure.append((field_name, data_type, is_nullable, key, extra))
-        table_structure.append((field))
+        table_structure.append(field)
     return table_structure
+
 
 # 类型处理器 把mysql数据库类型转换为java类型
 def convert_data_type(data_type):
@@ -89,4 +93,4 @@ def convert_data_type(data_type):
     elif "blob" in data_type:
         return "byte[]"
     else:
-        return "Object"  # Default type if no match is found
+        return "Object"
