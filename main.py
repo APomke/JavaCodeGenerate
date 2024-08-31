@@ -169,7 +169,7 @@ def generate_service_code():
                 service_name = file.split(".")[0] + "Service"
                 impl_class_name = file.split(".")[0] + "ServiceImpl"
                 service_impl_tmpl = Template(serviceimpl_template_str)
-                impl_result = service_impl_tmpl.render(package_name=package_name_root, mapper_name=mapper_name, entity_name=entity_name, service_name=service_name, class_name=impl_class_name)
+                impl_result = service_impl_tmpl.render(package_name=package_name_root, mapper_name=mapper_name, entity_name=entity_name, service_name=service_name, class_name=impl_class_name,entity_list=entity_list)
 
                 # print(impl_result)
                 # 保存service接口实现到Java项目
