@@ -4,8 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 SpingBootSimpleTemplate/
-__pycache__/
-__pycache__
+**/__pycache__
 
 ### STS ###
 .apt_generated
