@@ -1,5 +1,5 @@
 serviceimpl_template_str = """
-package {{ package_name }}.impl;
+package {{ package_name }}.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -31,7 +31,7 @@ public class {{ class_name }} extends ServiceImpl<{{ mapper_name }}, {{ entity_n
     // 修改
     @Override
     public int update{{ entity_name }}({{ entity_name }} {{ entity_name | lower }}) {
-        return {{ entity_name | lower }}Mapper.updateById(entity_name | lower);
+        return {{ entity_name | lower }}Mapper.updateById({{ entity_name | lower }});
     }
     
     // 增加

@@ -21,7 +21,7 @@ def get_entity_field_and_type(entity_path):
                 line = line.split(" ")
                 entity_dict = {"type": line[0], "name": line[1], "name_first": string_utils.word_first_letter_size(line[1])}
                 entity_list.append(entity_dict)
-    print(entity_list)
+    # print(entity_list)
     return entity_list
 
 if __name__ == "__main__":
