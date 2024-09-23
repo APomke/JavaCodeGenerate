@@ -8,6 +8,7 @@ import {{ package_name }}.entity.{{ entity_name }};
 import {{ package_name }}.service.{{ service_name }};
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class {{ class_name }} extends ServiceImpl<{{ mapper_name }}, {{ entity_name }}> implements {{ service_name }} {
@@ -16,16 +17,23 @@ public class {{ class_name }} extends ServiceImpl<{{ mapper_name }}, {{ entity_n
     private {{ mapper_name }} {{ entity_name | lower }}Mapper;
     // 查询
     public {{ entity_name }} get{{ entity_name }}(int id) {
-        return {{ entity_name | lower }}Mapper.selectById()(id);
+        return {{ entity_name | lower }}Mapper.selectById(id);
     }
     {% for entity in entity_list %}
     
     @Override
+    {% if entity.name == 'id' %}
+    public {{ entity_name }} get{{ entity_name }}By{{ entity.name_first }}({{ entity.type }} {{ entity.name }}) {
+        QueryWrapper<{{ entity_name }}> queryWrapper = new QueryWrapper<>();
+        return {{ entity_name | lower }}Mapper.selectById(queryWrapper);
+    }
+    {% else %}
     public List<{{ entity_name }}> get{{ entity_name }}ListBy{{ entity.name_first }}({{ entity.type }} {{ entity.name }}) {
         QueryWrapper<{{ entity_name }}> queryWrapper = new QueryWrapper<>();
-        queryWrapper.select("{{ entity.name_first | lower }}");
+        queryWrapper.eq("{{ entity.name_first | lower }}",{{ entity.name }});
         return {{ entity_name | lower }}Mapper.selectList(queryWrapper);
     }
+    {% endif %}
     {%- endfor %}
     
     // 修改

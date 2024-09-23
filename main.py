@@ -182,10 +182,11 @@ def generate_controller_code():
                 entity_list = get_entity_field_and_type(entity_path)
                 # 设置类名
                 class_name = file.split(".")[0] + "Controller"
+                service_name = file.split(".")[0] + "Service"
                 tmpl = Template(controller_template_str)
                 result = tmpl.render(class_name=class_name, package_name=package_name_root,
                                      entity_name=file.split(".")[0], package_name_root=package_name_root,
-                                     entity_list=entity_list)
+                                     entity_list=entity_list, service_name=service_name)
                 file_name = class_name
                 # 保存service接口代码到java项目
                 # 判断是否自定义生成代码的路径
