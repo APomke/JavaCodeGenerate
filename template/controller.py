@@ -19,17 +19,42 @@ public class {{ entity_name }}Controller {
     
     // 查询
     {% for entity in entity_list %}
+<<<<<<< HEAD
     @GetMapping("/get{{ entity_name }}ListBy{{ entity.name_first }}")
     public ResponseVO get{{ entity_name }}ListBy{{ entity.name_first }}({{ entity.type }} {{ entity.name }}) {
         ResponseVO responseVO = new ResponseVO();
         
         List<{{ entity_name }}> {{ entity_name | lower }}List = {{ entity_name | lower }}Service {{ entity_name | lower }}Service.get{{ entity_name }}ListBy{{ entity.name_first }}({{ entity.name }});
+=======
+    {% if entity.name == 'id' %}
+    @GetMapping("/get{{ entity_name }}ListBy{{ entity.name_first }}")
+    public ResponseVO get{{ entity_name }}By{{ entity.name_first }}({{ entity.type }} {{ entity.name }}) {
+        ResponseVO responseVO = new ResponseVO();
+        
+        {{ entity_name }} {{ entity_name | lower }}List = {{ entity_name | lower }}Service.get{{ entity_name }}By{{ entity.name_first }}({{ entity.name }});
+>>>>>>> origin/mac
         responseVO.setCode(200);
         responseVO.setInfo("查询成功！");
         responseVO.setStatus("success");
         responseVO.setData({{ entity_name | lower }}List);
         return responseVO;
     }
+<<<<<<< HEAD
+=======
+    {% else %}
+    @GetMapping("/get{{ entity_name }}ListBy{{ entity.name_first }}")
+    public ResponseVO get{{ entity_name }}ListBy{{ entity.name_first }}({{ entity.type }} {{ entity.name }}) {
+        ResponseVO responseVO = new ResponseVO();
+        
+        List<{{ entity_name }}> {{ entity_name | lower }}List = {{ entity_name | lower }}Service.get{{ entity_name }}ListBy{{ entity.name_first }}({{ entity.name }});
+        responseVO.setCode(200);
+        responseVO.setInfo("查询成功！");
+        responseVO.setStatus("success");
+        responseVO.setData({{ entity_name | lower }}List);
+        return responseVO;
+    }
+    {% endif %}
+>>>>>>> origin/mac
     {%- endfor %}
     
     // 修改
@@ -57,7 +82,11 @@ public class {{ entity_name }}Controller {
     @PostMapping("/delete{{ entity_name }}")
     public ResponseVO delete{{ entity_name }}({{ entity_name }} {{ entity_name | lower }}) {
         ResponseVO responseVO = new ResponseVO();
+<<<<<<< HEAD
         int i = {{ entity_name | lower }}Service.delete{{ entity_name }}({{ entity_name | lower }});
+=======
+        int i = {{ entity_name | lower }}Service.delete{{ entity_name }}({{ entity_name | lower }}.getId());
+>>>>>>> origin/mac
         responseVO.setCode(200);
         responseVO.setInfo("删除成功！");
         responseVO.setStatus("success");
