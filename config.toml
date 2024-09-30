@@ -1,11 +1,9 @@
 # config.toml
 
 [generate]
-<<<<<<< HEAD
-projectLocalPath = "C:\\Users\\admin\\Desktop\\实战\\JavaCodeGenerate\\SpingBootSimpleTemplate" # java项目根目录路径
-=======
-projectLocalPath = "/Users/qinglong/music-website-main/music-backend/" # java项目根目录路径
->>>>>>> origin/mac
+
+projectLocalPath = "C:/Users/admin/Desktop/实战/JavaCodeGenerate/SpingBootSimpleTemplate/" # java项目根目录路径
+
 
 isGenerateController = true # 是否生成controller控制器层代码 默认为true
 isGenerateMapper = true # 是否生成mapper层代码 默认为true
@@ -21,19 +19,11 @@ EntityGenerateLocalPath = "" # 存放entity层实体类代码生成的本地路�
 ExclusionList = []
 
 [database]
-<<<<<<< HEAD
 url = "localhost" # 数据库url
 port = 3306
 username = "root" # 数据库用户名
-password = "311252" # 数据库密码
-dbname = "template" # 数据库名称
-=======
-url = "18.162.145.124" # 数据库url
-port = 3306
-username = "root" # 数据库用户名
-password = "q320.459sama" # 数据库密码
-dbname = "music" # 数据库名称
->>>>>>> origin/mac
+password = "password" # 数据库密码
+dbname = "dbname" # 数据库名称
 
 # 数据库类型转为java类型的映射表
 [convert]

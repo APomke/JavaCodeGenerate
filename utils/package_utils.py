@@ -2,11 +2,7 @@ import os
 import re
 
 
-<<<<<<< HEAD
-# 读取java项目获取项目包名
-=======
-# 璇诲彇java椤圭洰鑾峰彇椤圭洰鍖呭悕
->>>>>>> origin/mac
+
 def get_java_project_package_name(root_dir):
     main_class_pattern = re.compile(r'^\s*@SpringBootApplication')
     package_pattern = re.compile(r'^\s*package\s+([a-zA-Z0-9_.]+);')

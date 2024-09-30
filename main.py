@@ -35,11 +35,9 @@ def load_config():
     else:
         print("未获取到包名，请检查配置文件projectLocalPath项")
         sys.exit(0)
-<<<<<<< HEAD
-    package_name = package_name_root.replace(".", "\\")
-=======
+
     package_name = package_name_root.replace(".", "/")
->>>>>>> origin/mac
+
 
 
 # 判断要生成那些层的代码
@@ -96,11 +94,7 @@ def generate_mapper_code():
     # 生成mapper接口
     # 读取entity层对象 获取类名
     path = config.get("generate").get(
-<<<<<<< HEAD
-        "projectLocalPath") + "\\src" + "\\main" + "\\java" + "\\" + package_name + "\\" + "entity"
-=======
         "projectLocalPath") + "/src" + "/main" + "/java" + "/" + package_name + "/" + "entity"
->>>>>>> origin/mac
     print("查找{}路径下的实体类".format(path))
     for subdir, _, files in os.walk(path):
         if files is None:
@@ -129,11 +123,8 @@ def generate_service_code():
     # 生成service接口
 
     # 读取entity层对象 获取类名
-<<<<<<< HEAD
-    path = config.get("generate").get("projectLocalPath") + "\\src" + "\\main" + "\\java" + "\\" + package_name + "\\" + "entity"
-=======
+
     path = config.get("generate").get("projectLocalPath") + "/src" + "/main" + "/java" + "/" + package_name + "/" + "entity"
->>>>>>> origin/mac
     print("查找{}路径下的实体类".format(path))
     for subdir, _, files in os.walk(path):
         if files is None:
@@ -142,11 +133,8 @@ def generate_service_code():
         for file in files:
             if file.split(".")[1] == "java":
                 # 读取实体类对象里的各个属性名和类型
-<<<<<<< HEAD
-                entity_path = path + "\\" + file
-=======
+
                 entity_path = path + "/" + file
->>>>>>> origin/mac
                 entity_list = get_entity_field_and_type(entity_path)
                 class_name = file.split(".")[0] + "Service"
                 tmpl = Template(service_template_str)
@@ -171,17 +159,10 @@ def generate_service_code():
                 # print(impl_result)
                 # 保存service接口实现到Java项目
                 if config.get("generate").get("ServiceGenerateLocalPath") != "":
-<<<<<<< HEAD
-                    diy_path = config.get("generate").get("ServiceGenerateLocalPath") + "\\impl"
-                    save_code_to_java_project_to_path(diy_path, impl_class_name, impl_result)
-                else:
-                    save_code_to_java_project("service\\impl", impl_result, package_name, impl_class_name)
-=======
                     diy_path = config.get("generate").get("ServiceGenerateLocalPath") + "/impl"
                     save_code_to_java_project_to_path(diy_path, impl_class_name, impl_result)
                 else:
                     save_code_to_java_project("service/impl", impl_result, package_name, impl_class_name)
->>>>>>> origin/mac
     print("service层代码生成完成")
 
 
@@ -192,11 +173,7 @@ def generate_controller_code():
     print("开始生成controller层代码")
     # 读取entity层对象 获取类名
     path = config.get("generate").get(
-<<<<<<< HEAD
-        "projectLocalPath") + "\\src" + "\\main" + "\\java" + "\\" + package_name + "\\" + "entity"
-=======
         "projectLocalPath") + "/src" + "/main" + "/java" + "/" + package_name + "/" + "entity"
->>>>>>> origin/mac
     print("查找{}路径下的实体类".format(path))
     for subdir, _, files in os.walk(path):
         if files is None:
@@ -205,16 +182,6 @@ def generate_controller_code():
         for file in files:
             if file.split(".")[1] == "java":
                 # 读取实体类对象里的各个属性名和类型
-<<<<<<< HEAD
-                entity_path = path + "\\" + file
-                entity_list = get_entity_field_and_type(entity_path)
-                # 设置类名
-                class_name = file.split(".")[0] + "Controller"
-                tmpl = Template(controller_template_str)
-                result = tmpl.render(class_name=class_name, package_name=package_name_root,
-                                     entity_name=file.split(".")[0], package_name_root=package_name_root,
-                                     entity_list=entity_list)
-=======
                 entity_path = path + "/" + file
                 entity_list = get_entity_field_and_type(entity_path)
                 # 设置类名
@@ -224,7 +191,6 @@ def generate_controller_code():
                 result = tmpl.render(class_name=class_name, package_name=package_name_root,
                                      entity_name=file.split(".")[0], package_name_root=package_name_root,
                                      entity_list=entity_list, service_name=service_name)
->>>>>>> origin/mac
                 file_name = class_name
                 # 保存service接口代码到java项目
                 # 判断是否自定义生成代码的路径
@@ -239,11 +205,8 @@ def generate_controller_code():
 # 保存生成的代码到java项目里
 def save_code_to_java_project(dir_name, code, package_name, file_name):  # 要求 目录名，代码，包名（com.xxx.xxx）,文件名（不需要带.java后缀）
     # 设置文件名
-<<<<<<< HEAD
-    path = config.get("generate").get("projectLocalPath") + "\\src\\main\\java" + "\\" + package_name + "\\" + dir_name
-=======
     path = config.get("generate").get("projectLocalPath") + "/src/main/java" + "/" + package_name + "/" + dir_name
->>>>>>> origin/mac
+
     # print("路径为：",path)
     if not os.path.exists(path):  # 如果目录不存在则创建
         os.makedirs(path)
@@ -251,11 +214,7 @@ def save_code_to_java_project(dir_name, code, package_name, file_name):  # 要�
         # 每个单词首字母大写
         file_name = word_first_letter_size(file_name)
     file_name = file_name + ".java"
-<<<<<<< HEAD
-    path = path + "\\" + file_name
-=======
     path = path + "/" + file_name
->>>>>>> origin/mac
 
     # 判断要生成的文件是否在排除列表里
     if path in config.get("generate").get("ExclusionList"):
@@ -277,11 +236,8 @@ def save_code_to_java_project_to_path(path, file_name, code):
     file_name = file_name + ".java"
     if not os.path.exists(path):  # 如果路径不存在
         os.makedirs(path)
-<<<<<<< HEAD
-    path = path + "\\" + file_name
-=======
+
     path = path + "/" + file_name
->>>>>>> origin/mac
     # 判断要生成的文件是否在排除列表里
     if path in config.get("generate").get("ExclusionList"):
         print("{}在配置文件ExclusionList项中，代码将不会被覆盖".format(path))
